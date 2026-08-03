@@ -23,7 +23,6 @@ fn main() {
             ..default()
         }))
         .add_plugins(RapierPhysicsPlugin::<NoUserData>::default())
-        .add_plugins(RapierDebugRenderPlugin::default())
         .add_plugins((PlayerPlugin, WorldPlugin, ShootingPlugin, UiPlugin))
         .insert_resource(Score(0))
         .add_systems(Startup, setup_cursor)
@@ -36,8 +35,8 @@ pub struct Score(pub i32);
 
 fn setup_cursor(mut window_query: Query<&mut Window, With<PrimaryWindow>>) {
     if let Ok(mut window) = window_query.get_single_mut() {
-        window.cursor_options.grab_mode = CursorGrabMode::Locked;
-        window.cursor_options.visible = false;
+        window.cursor.grab_mode = CursorGrabMode::Locked;
+        window.cursor.visible = false;
     }
 }
 
@@ -47,13 +46,13 @@ fn toggle_cursor(
 ) {
     if keyboard.just_pressed(KeyCode::Escape) {
         if let Ok(mut window) = window_query.get_single_mut() {
-            let is_locked = window.cursor_options.grab_mode == CursorGrabMode::Locked;
-            window.cursor_options.grab_mode = if is_locked {
+            let is_locked = window.cursor.grab_mode == CursorGrabMode::Locked;
+            window.cursor.grab_mode = if is_locked {
                 CursorGrabMode::None
             } else {
                 CursorGrabMode::Locked
             };
-            window.cursor_options.visible = is_locked;
+            window.cursor.visible = is_locked;
         }
     }
-      }
+}
