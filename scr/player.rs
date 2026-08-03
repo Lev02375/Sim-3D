@@ -59,18 +59,20 @@ fn player_move(
     };
 
     let mut direction = Vec3::ZERO;
+    let forward = transform.rotation * Vec3::NEG_Z;
+    let right = transform.rotation * Vec3::X;
 
     if keyboard.pressed(KeyCode::KeyW) {
-        direction += transform.forward().as_vec3();
+        direction += forward;
     }
     if keyboard.pressed(KeyCode::KeyS) {
-        direction += transform.back().as_vec3();
+        direction -= forward;
     }
     if keyboard.pressed(KeyCode::KeyA) {
-        direction += transform.left().as_vec3();
+        direction -= right;
     }
     if keyboard.pressed(KeyCode::KeyD) {
-        direction += transform.right().as_vec3();
+        direction += right;
     }
 
     direction.y = 0.0;
@@ -103,12 +105,11 @@ fn player_look(
         
         player.rotate_y(-delta.x * sensitivity);
         
-        let (scale, rotation, translation) = pivot.to_scale_rotation_translation();
+        let (_, rotation, translation) = pivot.to_scale_rotation_translation();
         let mut euler = rotation.to_euler(EulerRot::YXZ);
         euler.1 -= delta.y * sensitivity;
         euler.1 = euler.1.clamp(-PI / 2.0 + 0.1, PI / 2.0 - 0.1);
         pivot.rotation = Quat::from_euler(EulerRot::YXZ, euler.0, euler.1, euler.2);
         pivot.translation = translation;
-        pivot.scale = scale;
     }
-  }
+}
