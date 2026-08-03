@@ -14,7 +14,7 @@ fn shoot(
     mouse: Res<ButtonInput<MouseButton>>,
     windows: Query<&Window>,
     camera_query: Query<(&Camera, &GlobalTransform)>,
-    rapier_context: Query<&RapierContext>,
+    rapier_context: Res<RapierContext>,
     mut targets: Query<(Entity, &mut Transform), With<Target>>,
     mut score: ResMut<Score>,
     mut commands: Commands,
@@ -25,7 +25,6 @@ fn shoot(
 
     let Ok(window) = windows.get_single() else { return };
     let Ok((camera, camera_transform)) = camera_query.get_single() else { return };
-    let Ok(rapier) = rapier_context.get_single() else { return };
 
     let center = Vec2::new(window.width() / 2.0, window.height() / 2.0);
     
@@ -36,7 +35,7 @@ fn shoot(
     let filter = QueryFilter::default();
     let max_distance = 100.0;
 
-    if let Some((entity, _toi)) = rapier.cast_ray(
+    if let Some((entity, _toi)) = rapier_context.cast_ray(
         ray.origin,
         *ray.direction,
         max_distance,
