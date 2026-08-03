@@ -59,7 +59,6 @@ fn spawn_walls(
 ) {
     let wall_material = materials.add(StandardMaterial {
         base_color: Color::srgb(0.2, 0.5, 0.8),
-        emissive: LinearRgba::rgb(0.05, 0.1, 0.2),
         metallic: 0.6,
         perceptual_roughness: 0.3,
         ..default()
@@ -104,10 +103,9 @@ fn spawn_targets(
         );
 
         commands.spawn((
-            Mesh3d(meshes.add(Sphere::new(0.5).mesh().ico(5).unwrap())),
+            Mesh3d(meshes.add(Sphere::new(0.5).mesh().ico(5))),
             MeshMaterial3d(materials.add(StandardMaterial {
                 base_color: color,
-                emissive: LinearRgba::rgb(color.to_srgba().red * 0.5, color.to_srgba().green * 0.5, color.to_srgba().blue * 0.5),
                 metallic: 0.8,
                 perceptual_roughness: 0.2,
                 ..default()
