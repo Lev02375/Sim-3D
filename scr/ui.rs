@@ -21,7 +21,9 @@ fn setup_ui(mut commands: Commands) {
             left: Val::Px(20.0),
             ..default()
         },
-        children![(
+    ))
+    .with_children(|parent| {
+        parent.spawn((
             Text::new("Счёт: 0"),
             TextFont {
                 font_size: 40.0,
@@ -29,8 +31,8 @@ fn setup_ui(mut commands: Commands) {
             },
             TextColor(Color::srgb(0.0, 1.0, 0.5)),
             ScoreText,
-        )],
-    ));
+        ));
+    });
     
     commands.spawn((
         Node {
@@ -39,15 +41,17 @@ fn setup_ui(mut commands: Commands) {
             left: Val::Px(20.0),
             ..default()
         },
-        children![(
+    ))
+    .with_children(|parent| {
+        parent.spawn((
             Text::new("WASD — движение | Мышь — обзор | ЛКМ — стрельба | ESC — курсор"),
             TextFont {
                 font_size: 16.0,
                 ..default()
             },
             TextColor(Color::srgb(0.7, 0.7, 0.7)),
-        )],
-    ));
+        ));
+    });
 }
 
 fn update_score(score: Res<Score>, mut query: Query<&mut Text, With<ScoreText>>) {
